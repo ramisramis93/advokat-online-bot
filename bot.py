@@ -325,6 +325,14 @@ async def text_handler(message: types.Message):
     user_id = message.from_user.id
     text = message.text.strip()
 
+    mode = USER_MODE.get(user_id)
+
+    if mode == "consult":
+        await notify_admin(message)
+        USER_MODE.pop(user_id, None)
+        await message.answer("✅ Запрос принят. Мы свяжемся с вами после рассмотрения.", reply_markup=main_menu())
+        return
+
     if too_fast(user_id):
         await message.answer("⏳ Слишком часто. Повторите через пару секунд.")
         return
