@@ -248,12 +248,16 @@ def too_fast(user_id: int) -> bool:
 async def notify_admin(message: types.Message) -> None:
     user = message.from_user
     username = f"@{user.username}" if user.username else "без username"
+
     payload = (
         "📩 <b>Новая заявка</b>\n\n"
         f"👤 Пользователь: {username}\n"
-        f"🆔 ID: <code>{user.id}</code>\n\n"
-        f"<b>Сообщение:</b>\n{types.utils.markdown.quote_html(message.text)}"
+        f"🆔 ID клиента: <code>{user.id}</code>\n\n"
+        f"<b>Сообщение:</b>\n{message.text}\n\n"
+        f"Чтобы ответить клиенту, скопируйте команду ниже:\n"
+        f"<code>/reply {user.id} ваш текст ответа</code>"
     )
+
     try:
         admin_id = int(ADMIN_ID.strip())
         await bot.send_message(admin_id, payload)
