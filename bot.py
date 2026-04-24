@@ -25,8 +25,8 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN, parse_mode="HTML")
 dp = Dispatcher(bot)
 
-BASE_DIR = Path(__file__).resolve().parent
-ANSWERS_PATH = BASE_DIR / "data" / "answers.json"
+import os
+ANSWERS_PATH = os.path.join(os.getcwd(), "data", "answers.json")
 
 with open(ANSWERS_PATH, "r", encoding="utf-8") as f:
     ANSWERS: Dict[str, str] = json.load(f)
