@@ -279,7 +279,18 @@ async def start(message: types.Message):
 @dp.message_handler(commands=["myid"])
 async def myid(message: types.Message):
     await message.answer(f"Ваш Telegram ID: <code>{message.from_user.id}</code>")
+    
+@dp.message_handler(commands=["testadmin"])
+async def testadmin(message: types.Message):
+    if not ADMIN_ID:
+        await message.answer("❌ ADMIN_ID не задан.")
+        return
 
+    try:
+        await bot.send_message(int(ADMIN_ID), "✅ Тест админу дошёл")
+        await message.answer("✅ Отправлено админу")
+    except Exception as e:
+        await message.answer(f"Ошибка: {e}")
 
 @dp.callback_query_handler(lambda c: True)
 async def callbacks(call: types.CallbackQuery):
