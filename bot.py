@@ -296,6 +296,33 @@ async def testadmin(message: types.Message):
     except Exception as e:
         await message.answer(f"Ошибка: {e}")
 
+@dp.message_handler(commands=["reply"])
+async def reply_to_user(message: types.Message):
+    if str(message.from_user.id) != str(ADMIN_ID).strip():
+        await message.answer("⛔ Команда доступна только администратору.")
+        return
+
+    parts = message.text.split(" ", 2)
+
+    if len(parts) < 3:
+        await message.answer(
+            "Используйте формат:\n"
+            "<code>/reply ID_клиента текст ответа</code>"
+        )
+        return
+
+    client_id = parts[1]
+    reply_text = parts[2]
+
+    try:
+        await bot.send_message(
+            int(client_id),
+            f"⚖️ <b>Ответ юриста:</b>\n\n{reply_text}"
+        )
+        await message.answer("✅ Ответ отправлен клиенту.")
+    except Exception as e:
+        await message.answer(f"❌ Не удалось отправить ответ: {e}")
+        
 @dp.callback_query_handler(lambda c: True)
 async def callbacks(call: types.CallbackQuery):
     data = call.data or ""
