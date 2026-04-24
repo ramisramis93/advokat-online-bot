@@ -254,11 +254,11 @@ async def notify_admin(message: types.Message) -> None:
         f"🆔 ID: <code>{user.id}</code>\n\n"
         f"<b>Сообщение:</b>\n{types.utils.markdown.quote_html(message.text)}"
     )
-    if ADMIN_ID and ADMIN_ID.isdigit():
-        await bot.send_message(int(ADMIN_ID), payload)
-    else:
-        # Бот не может сам написать администратору по username, пока не известен chat_id.
-        logging.warning("ADMIN_ID не задан. Заявка не отправлена администратору.")
+    try:
+        admin_id = int(ADMIN_ID.strip())
+        await bot.send_message(admin_id, payload)
+    except Exception as e:
+        await message.answer(f"❌ Ошибка отправки админу: {e}")
 
 
 @dp.message_handler(commands=["start"])
