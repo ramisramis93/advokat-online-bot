@@ -325,12 +325,14 @@ async def text_handler(message: types.Message):
     user_id = message.from_user.id
     text = message.text.strip()
 
-if too_fast(user_id):
-    pass
-    if len(text) < 3:
+    if too_fast(user_id):
+        pass
+    
+        if len(text) < 3:
         await message.answer("Напишите чуть подробнее.")
         return
-    if is_spam(text):
+        
+        if is_spam(text):
         await message.answer("⛔ Сообщение похоже на спам. Ссылки и слишком длинные сообщения не принимаются.")
         return
 
