@@ -361,6 +361,9 @@ async def callbacks(call: types.CallbackQuery):
 
 @dp.message_handler(content_types=types.ContentTypes.TEXT)
 async def text_handler(message: types.Message):
+    user_id = message.from_user.id
+    text = message.text.strip()
+
     if user_id in ADMIN_REPLY_TO:
         client_id = ADMIN_REPLY_TO.pop(user_id)
         try:
