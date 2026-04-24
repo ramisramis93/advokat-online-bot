@@ -153,7 +153,7 @@ TOPICS: Dict[str, Dict[str, int]] = {
 
 USER_MODE: Dict[int, str] = {}
 LAST_ACTION: Dict[int, float] = {}
-
+ADMIN_REPLY_TO: Dict[int, int] = {}
 
 def is_admin(message: types.Message) -> bool:
     username = (message.from_user.username or "").lower()
@@ -253,14 +253,15 @@ async def notify_admin(message: types.Message) -> None:
         "📩 <b>Новая заявка</b>\n\n"
         f"👤 Пользователь: {username}\n"
         f"🆔 ID клиента: <code>{user.id}</code>\n\n"
-        f"<b>Сообщение:</b>\n{message.text}\n\n"
-        f"Чтобы ответить клиенту, скопируйте команду ниже:\n"
-        f"<code>/reply {user.id} ваш текст ответа</code>"
+        f"<b>Сообщение:</b>\n{message.text}"
     )
+
+    kb = InlineKeyboardMarkup(row_width=1)
+    kb.add(InlineKeyboardButton("✍️ Ответить клиенту", callback_data=f"admin_reply:{user.id}"))
 
     try:
         admin_id = int(ADMIN_ID.strip())
-        await bot.send_message(admin_id, payload)
+        await bot.send_message(admin_id, payload, reply_markup=kb)
     except Exception as e:
         await message.answer(f"❌ Ошибка отправки админу: {e}")
 
@@ -327,6 +328,13 @@ async def reply_to_user(message: types.Message):
 async def callbacks(call: types.CallbackQuery):
     data = call.data or ""
     USER_MODE.pop(call.from_user.id, None)
+      
+    if data.startswith("admin_reply:"):
+        client_id = int(data.split(":", 1)[1])
+        ADMIN_REPLY_TO[call.from_user.id] = client_id
+        await call.message.answer("✍️ Напишите текст ответа клиенту одним сообщением.")
+        await call.answer()
+        return
 
     if data == "main":
         await call.message.edit_text("🏠 <b>Главное меню</b>", reply_markup=main_menu())
