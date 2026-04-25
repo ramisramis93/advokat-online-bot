@@ -509,8 +509,10 @@ async def callbacks(call: types.CallbackQuery):
 async def text_handler(message: types.Message):
     user_id = message.from_user.id
     text = message.text.strip()
+
     if user_id in ADMIN_REPLY_TO:
         client_id = ADMIN_REPLY_TO.pop(user_id)
+        FOLLOW_UP_SENT[client_id] = True
         try:
             kb = InlineKeyboardMarkup(row_width=1)
             kb.add(InlineKeyboardButton("✍️ Спросить ещё", callback_data="consult"))
@@ -529,14 +531,14 @@ async def text_handler(message: types.Message):
 
     mode = USER_MODE.get(user_id)
 
-if mode == "consult":
-    history = DIALOG_HISTORY.get(user_id, [])
-    history.append(f"Клиент:\n{text}")
-    DIALOG_HISTORY[user_id] = history[-6:]
+    if mode == "consult":
+        history = DIALOG_HISTORY.get(user_id, [])
+        history.append(f"Клиент:\n{text}")
+        DIALOG_HISTORY[user_id] = history[-6:]
 
-    save_to_sheet(message)
+        save_to_sheet(message)
 
-    await notify_admin(message)
+        await notify_admin(message)
 
         USER_MODE[user_id] = "main"
 
