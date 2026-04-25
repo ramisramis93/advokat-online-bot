@@ -355,7 +355,14 @@ async def callbacks(call: types.CallbackQuery):
     if data.startswith("admin_reply:"):
         client_id = int(data.split(":", 1)[1])
         ADMIN_REPLY_TO[call.from_user.id] = client_id
-        await call.message.answer("✍️ Напишите текст ответа клиенту одним сообщением.")
+
+        kb = InlineKeyboardMarkup(row_width=1)
+        kb.add(InlineKeyboardButton("❌ Отменить ответ", callback_data="cancel_admin_reply"))
+
+        await call.message.answer(
+            "✍️ Напишите текст ответа клиенту одним сообщением.",
+            reply_markup=kb
+        )
         await call.answer()
         return
 
