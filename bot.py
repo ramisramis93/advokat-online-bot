@@ -229,14 +229,23 @@ def prepare_answer(answer_id: int) -> str:
 
 def is_spam(text: str) -> bool:
     lowered = text.lower()
-    if len(text) > 2500:
+
+    # Блокируем ссылки
+    if re.search(r"(https?://|www\.|t\.me/)", lowered):
         return True
-    if re.search(r"(https?://|www\.|\.ru|\.com|\.рф|t\.me/)", lowered):
+
+    # Очень длинные сообщения лучше не принимать
+    if len(text) > 3500:
         return True
-    if re.search(r"(.)\1{12,}", lowered):
+
+    # Много одинаковых символов подряд
+    if re.search(r"(.)\1{15,}", lowered):
         return True
-    if sum(ch.isdigit() for ch in text) > 60:
+
+    # Слишком много цифр подряд — похоже на спам/рекламу
+    if re.search(r"\d{25,}", text):
         return True
+
     return False
 
 
