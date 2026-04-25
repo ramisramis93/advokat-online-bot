@@ -366,6 +366,12 @@ async def callbacks(call: types.CallbackQuery):
         await call.answer()
         return
 
+    if data == "cancel_admin_reply":
+        ADMIN_REPLY_TO.pop(call.from_user.id, None)
+        await call.message.answer("❌ Ответ клиенту отменён.")
+        await call.answer()
+        return
+
     if data == "main":
         await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
 
