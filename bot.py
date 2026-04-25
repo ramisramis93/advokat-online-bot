@@ -474,14 +474,6 @@ async def callbacks(call: types.CallbackQuery):
     if data == "main":
         await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
 
-    elif data == "topics":
-        await call.message.answer(
-            "📚 <b>Полезные советы</b>\n\n"
-            "Краткие ответы на частые вопросы.\n\n"
-            "Выберите тему:",
-            reply_markup=topics_menu()
-        )
-
     elif data.startswith("topic:"):
         idx = int(data.split(":", 1)[1])
         topic_name = list(TOPICS.keys())[idx]
