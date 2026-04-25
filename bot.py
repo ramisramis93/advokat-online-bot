@@ -592,9 +592,6 @@ async def text_handler(message: types.Message):
         )
 
 
-if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True)
-
 def save_to_sheet(message):
     try:
         scope = [
@@ -629,3 +626,7 @@ def save_to_sheet(message):
 
     except Exception as e:
         print("Ошибка записи в таблицу:", e)
+
+
+if __name__ == "__main__":
+    executor.start_polling(dp, skip_updates=True)
