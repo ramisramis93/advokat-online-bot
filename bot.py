@@ -380,6 +380,25 @@ async def callbacks(call: types.CallbackQuery):
         await call.answer()
         return
 
+    if data == "client_done":
+        user_id = call.from_user.id
+        username = f"@{call.from_user.username}" if call.from_user.username else "без username"
+
+        try:
+            admin_id = int(ADMIN_ID.strip())
+            await bot.send_message(
+                admin_id,
+                f"✅ Клиент завершил диалог.\n\n👤 {username}\n🆔 <code>{user_id}</code>\n\nЗаявка закрыта."
+            )
+        except Exception:
+            pass
+
+        USER_MODE[user_id] = "main"
+
+        await call.message.answer("✅ Спасибо за обращение.\n\n🏠 Главное меню:", reply_markup=main_menu())
+        await call.answer()
+        return
+
     if data == "main":
         await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
 
@@ -419,7 +438,7 @@ async def text_handler(message: types.Message):
         try:
             kb = InlineKeyboardMarkup(row_width=1)
             kb.add(InlineKeyboardButton("✍️ Спросить ещё", callback_data="consult"))
-            kb.add(InlineKeyboardButton("✅ Мне всё понятно, спасибо", callback_data="main"))
+            kb.add(InlineKeyboardButton("✅ Мне всё понятно, спасибо", callback_data="client_done"))
 
             await bot.send_message(
                 client_id,
