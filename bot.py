@@ -225,7 +225,12 @@ def prepare_answer(answer_id: int) -> str:
     # Telegram limit is 4096; leave room for footer.
     if len(raw) > 3400:
         raw = raw[:3400].rsplit(" ", 1)[0] + "…\n\n<i>Текст сокращен. Для полной оценки ситуации можно направить запрос на консультацию.</i>"
-    return f"⚖️ <b>{title_from_text(raw)}</b>\n\n{raw}"
+    return (
+        f"⚖️ <b>{title_from_text(raw)}</b>\n\n{raw}\n\n"
+        "—\n"
+        "Если ситуация похожа на вашу — опишите её.\n"
+        "Подскажу, что лучше сделать именно в вашем случае."
+    )
 
 
 def is_spam(text: str) -> bool:
