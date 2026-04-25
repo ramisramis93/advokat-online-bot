@@ -286,16 +286,15 @@ async def send_follow_up(user_id: int):
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
     USER_MODE.pop(message.from_user.id, None)
-    if is_admin(message):
-        await message.answer(
-            f"✅ Админ определён. Ваш Telegram ID: <code>{message.from_user.id}</code>\n\n"
-            "Скопируйте это число в Railway → Variables → ADMIN_ID."
-        )
-    await message.answer(
-        "👋 <b>Адвокат онлайн</b>\n\n"
-        "Помогаю разобраться в юридических вопросах.\n"
-        "Кратко и по делу.\n\n"
-        "Выберите, что вам нужно:",
+
+    await bot.send_photo(
+        chat_id=message.chat.id,
+        photo=open("assets/start.jpg", "rb"),
+        caption=(
+            "👋 <b>Адвокат онлайн</b>\n\n"
+            "Краткие ответы на юридические вопросы.\n"
+            "Если нужен разбор ситуации — задайте вопрос."
+        ),
         reply_markup=main_menu()
     )
 
