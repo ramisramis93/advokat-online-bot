@@ -369,7 +369,6 @@ async def reply_to_user(message: types.Message):
 @dp.callback_query_handler(lambda c: True)
 async def callbacks(call: types.CallbackQuery):
     data = call.data or ""
-    USER_MODE.pop(call.from_user.id, None)
 
     if data.startswith("admin_reply:"):
         client_id = int(data.split(":", 1)[1])
@@ -412,23 +411,65 @@ async def callbacks(call: types.CallbackQuery):
 
         USER_MODE[user_id] = "main"
 
-        await call.message.answer("✅ Спасибо за обращение.\n\n🏠 Главное меню:", reply_markup=main_menu())
+        await call.message.answer(
+            "✅ Спасибо за обращение.\n\n🏠 Главное меню:",
+            reply_markup=main_menu()
+        )
         await call.answer()
         return
 
     if data == "help":
         await call.message.answer(
             "ℹ️ <b>Как пользоваться ботом</b>\n\n"
-            "📚 <b>Разобрать ситуацию</b> — выберите тему и получите ответ.\n"
-            "📝 <b>Задать вопрос</b> — опишите свою ситуацию одним сообщением.\n"
-            "🔎 <b>Найти ответ</b> — поиск по ключевым словам.\n\n"
-            "💬 Консультация бесплатная.\n"
-            "Если потребуется подробный разбор — помогу отдельно.\n\n"
-            "📩 После ответа вы можете задать уточняющий вопрос или завершить диалог.",
+            "📚 Полезные советы — выбрать тему и получить ответ\n"
+            "📝 Задать вопрос — написать свою ситуацию\n"
+            "🔎 Найти ответ — поиск по ключевым словам\n\n"
+            "💬 Консультация бесплатная",
             reply_markup=main_menu()
         )
         await call.answer()
         return
+
+    if data == "main":
+        await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
+
+    elif data == "topics":
+        await call.message.answer(
+            "📚 <b>Полезные советы</b>\n\n"
+            "Краткие ответы на частые вопросы.\n\n"
+            "Выберите тему:",
+            reply_markup=topics_menu()
+        )
+
+    elif data.startswith("topic:"):
+        idx = int(data.split(":", 1)[1])
+        topic_name = list(TOPICS.keys())[idx]
+        await call.message.answer(
+            f"{topic_name}\n\nВыберите вопрос:",
+            reply_markup=subtopics_menu(idx)
+        )
+
+    elif data.startswith("answer:"):
+        answer_id = int(data.split(":", 1)[1])
+        await call.message.answer(
+            prepare_answer(answer_id),
+            reply_markup=answer_menu()
+        )
+
+    elif data == "search":
+        USER_MODE[call.from_user.id] = "search"
+        await call.message.answer(
+            "🔎 Введите 1–3 ключевых слова. Например: <i>алименты</i>, <i>допрос</i>, <i>пенсия</i>."
+        )
+
+    elif data == "consult":
+        USER_MODE[call.from_user.id] = "consult"
+        await call.message.answer(
+            "📝 Кратко опишите вашу ситуацию одним сообщением.\n\n"
+            "Я изучу и дам ответ."
+        )
+
+    await call.answer()
 
     if data == "main":
         await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
