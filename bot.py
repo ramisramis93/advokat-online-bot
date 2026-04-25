@@ -20,8 +20,6 @@ BOT_TOKEN = os.getenv("BOT_TOKEN", "").strip()
 ADMIN_ID = os.getenv("ADMIN_ID", "").strip()
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "ramis_zz").strip().lstrip("@")
 
-print("BOT_TOKEN_CHECK:", BOT_TOKEN[:10], "...", BOT_TOKEN[-6:], "LEN=", len(BOT_TOKEN))
-
 if not BOT_TOKEN:
     raise RuntimeError("Не задан BOT_TOKEN. Укажите токен в переменных Railway или в .env")
 
