@@ -154,6 +154,7 @@ TOPICS: Dict[str, Dict[str, int]] = {
 USER_MODE: Dict[int, str] = {}
 LAST_ACTION: Dict[int, float] = {}
 ADMIN_REPLY_TO: Dict[int, int] = {}
+FOLLOW_UP_SENT: Dict[int, bool] = {}
 
 def is_admin(message: types.Message) -> bool:
     username = (message.from_user.username or "").lower()
@@ -264,6 +265,22 @@ async def notify_admin(message: types.Message) -> None:
         await bot.send_message(admin_id, payload, reply_markup=kb)
     except Exception as e:
         await message.answer(f"❌ Ошибка отправки админу: {e}")
+
+
+async def send_follow_up(user_id: int):
+    await asyncio.sleep(600)
+
+    if FOLLOW_UP_SENT.get(user_id):
+        return
+
+    try:
+        await bot.send_message(
+            user_id,
+            "Если ваш вопрос ещё актуален — напишите, помогу разобраться."
+        )
+        FOLLOW_UP_SENT[user_id] = True
+    except Exception:
+        pass
 
 
 @dp.message_handler(commands=["start"])
