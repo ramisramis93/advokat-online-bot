@@ -274,12 +274,12 @@ async def start(message: types.Message):
             f"✅ Админ определён. Ваш Telegram ID: <code>{message.from_user.id}</code>\n\n"
             "Скопируйте это число в Railway → Variables → ADMIN_ID."
         )
-    await message.answer(
-        "👋 <b>Адвокат онлайн</b>\n\n"
-        "Кратко и по делу"Выберите раздел или задайте свой вопрос."
-        "Выберите раздел или задайте свой вопрос."
-        reply_markup=main_menu(),
-    )
+        await message.answer(
+            "👋 <b>Адвокат онлайн</b>\n\n"
+            "Кратко и по делу\n\n"
+            "Выберите раздел или задайте свой вопрос.",
+            reply_markup=main_menu()
+        )
 
 
 @dp.message_handler(commands=["myid"])
