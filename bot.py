@@ -454,12 +454,13 @@ async def callbacks(call: types.CallbackQuery):
         USER_MODE[call.from_user.id] = "search"
         await call.message.answer("🔎 Введите 1–3 ключевых слова. Например: <i>алименты</i>, <i>допрос</i>, <i>пенсия</i>.")
 
-    elif data == "consult":
-        USER_MODE[call.from_user.id] = "consult"
-        await call.message.answer(
-            "📝 Кратко опишите вашу ситуацию одним сообщением.\n\n"
-            "Я изучу и дам ответ."
-        )
+elif data == "consult":
+    USER_MODE[call.from_user.id] = "consult"
+
+    await call.message.answer(
+        "📝 Кратко опишите вашу ситуацию одним сообщением.\n\n"
+        "Я изучу и дам ответ."
+    )
 
     await call.answer()
 
