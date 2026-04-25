@@ -489,12 +489,14 @@ async def text_handler(message: types.Message):
 
     mode = USER_MODE.get(user_id)
 
-    if mode == "consult":
-        history = DIALOG_HISTORY.get(user_id, [])
-        history.append(f"Клиент:\n{text}")
-        DIALOG_HISTORY[user_id] = history[-6:]
+if mode == "consult":
+    history = DIALOG_HISTORY.get(user_id, [])
+    history.append(f"Клиент:\n{text}")
+    DIALOG_HISTORY[user_id] = history[-6:]
 
-        await notify_admin(message)
+    save_to_sheet(message)
+
+    await notify_admin(message)
 
         USER_MODE[user_id] = "main"
 
