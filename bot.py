@@ -355,25 +355,31 @@ async def callbacks(call: types.CallbackQuery):
         return
 
     if data == "main":
-        await call.message.edit_text("🏠 <b>Главное меню</b>", reply_markup=main_menu())
+        await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
+
     elif data == "topics":
-        await call.message.edit_text("📚 <b>Выберите раздел</b>", reply_markup=topics_menu())
+        await call.message.answer("📚 <b>Выберите раздел</b>", reply_markup=topics_menu())
+
     elif data.startswith("topic:"):
         idx = int(data.split(":", 1)[1])
         topic_name = list(TOPICS.keys())[idx]
-        await call.message.edit_text(f"{topic_name}\n\nВыберите вопрос:", reply_markup=subtopics_menu(idx))
+        await call.message.answer(f"{topic_name}\n\nВыберите вопрос:", reply_markup=subtopics_menu(idx))
+
     elif data.startswith("answer:"):
         answer_id = int(data.split(":", 1)[1])
-        await call.message.edit_text(prepare_answer(answer_id), reply_markup=answer_menu())
+        await call.message.answer(prepare_answer(answer_id), reply_markup=answer_menu())
+
     elif data == "search":
         USER_MODE[call.from_user.id] = "search"
         await call.message.answer("🔎 Введите 1–3 ключевых слова. Например: <i>алименты</i>, <i>допрос</i>, <i>пенсия</i>.")
+
     elif data == "consult":
         USER_MODE[call.from_user.id] = "consult"
         await call.message.answer(
-            "📝 Кратко опишите вашу ситуацию одним сообщением.\n\nЯ изучу и дам ответ."
-            "Сообщение уйдет администратору бота."
+            "📝 Кратко опишите вашу ситуацию одним сообщением.\n\n"
+            "Я изучу и дам ответ."
         )
+
     await call.answer()
 
 
