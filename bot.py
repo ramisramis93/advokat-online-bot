@@ -287,6 +287,8 @@ async def send_follow_up(user_id: int):
 async def start(message: types.Message):
     USER_MODE.pop(message.from_user.id, None)
 
+    await message.answer("🎉")
+
     await bot.send_photo(
         chat_id=message.chat.id,
         photo=open("assets/start.jpg", "rb"),
