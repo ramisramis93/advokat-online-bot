@@ -410,9 +410,18 @@ async def text_handler(message: types.Message):
     mode = USER_MODE.get(user_id)
 
     if mode == "consult":
+        history = DIALOG_HISTORY.get(user_id, [])
+        history.append(f"Клиент:\n{text}")
+        DIALOG_HISTORY[user_id] = history[-6:]
+
         await notify_admin(message)
-        USER_MODE.pop(user_id, None)
-        await message.answer("✅ Запрос принят. Мы свяжемся с вами после рассмотрения.", reply_markup=main_menu())
+
+        USER_MODE[user_id] = "main"
+
+        await message.answer(
+            "✅ Запрос принят. Мы свяжемся с вами после рассмотрения.\n\n🏠 Главное меню:",
+            reply_markup=main_menu()
+        )
         return
 
     if too_fast(user_id):
