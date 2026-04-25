@@ -155,6 +155,7 @@ USER_MODE: Dict[int, str] = {}
 LAST_ACTION: Dict[int, float] = {}
 ADMIN_REPLY_TO: Dict[int, int] = {}
 FOLLOW_UP_SENT: Dict[int, bool] = {}
+DIALOG_HISTORY: Dict[int, list] = {}
 
 def is_admin(message: types.Message) -> bool:
     username = (message.from_user.username or "").lower()
