@@ -4,6 +4,8 @@ import logging
 import os
 import re
 import time
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from pathlib import Path
 from typing import Dict, List, Tuple
 
