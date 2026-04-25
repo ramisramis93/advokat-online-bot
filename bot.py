@@ -550,3 +550,38 @@ async def text_handler(message: types.Message):
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
+
+def save_to_sheet(message):
+    try:
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+
+        creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+        client = gspread.authorize(creds)
+
+        sheet = client.open("Заявки бот").sheet1
+
+        from datetime import datetime
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        user = message.from_user
+        user_id = user.id
+        username = f"@{user.username}" if user.username else "без username"
+        name = user.first_name
+        text = message.text
+
+        sheet.append_row([
+            now,
+            user_id,
+            username,
+            name,
+            text,
+            "новая",
+            "telegram_bot",
+            now
+        ])
+
+    except Exception as e:
+        print("Ошибка записи в таблицу:", e)
