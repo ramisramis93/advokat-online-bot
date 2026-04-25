@@ -400,16 +400,21 @@ async def text_handler(message: types.Message):
         return
 
     if is_spam(text):
-        await message.answer("⛔ Сообщение похоже на спам. Ссылки и слишком длинные сообщения не принимаются.")
-        return
-    
-    mode = USER_MODE.get(user_id)
+    await message.answer("⛔ Сообщение похоже на спам. Ссылки и слишком длинные сообщения не принимаются.")
+    return
 
-    if mode == "consult":
-        await notify_admin(message)
-        USER_MODE.pop(user_id, None)
-        await message.answer("✅ Запрос принят. Мы свяжемся с вами после рассмотрения.", reply_markup=main_menu())
-        return
+mode = USER_MODE.get(user_id)
+
+if mode == "consult":
+    await notify_admin(message)
+
+    USER_MODE[user_id] = "main"
+
+    await message.answer(
+        "✅ Запрос принят. Мы свяжемся с вами после рассмотрения.\n\n🏠 Главное меню:",
+        reply_markup=main_menu()
+    )
+    return
 
     # Поиск включается либо кнопкой, либо обычным текстом.
     q = normalize_query(text)
