@@ -364,23 +364,23 @@ async def text_handler(message: types.Message):
     user_id = message.from_user.id
     text = message.text.strip()
 
-if user_id in ADMIN_REPLY_TO:
-    client_id = ADMIN_REPLY_TO.pop(user_id)
-    try:
-        kb = InlineKeyboardMarkup(row_width=1)
-        kb.add(InlineKeyboardButton("✍️ Спросить ещё", callback_data="consult"))
-        kb.add(InlineKeyboardButton("✅ Мне всё понятно, спасибо", callback_data="main"))
+    if user_id in ADMIN_REPLY_TO:
+        client_id = ADMIN_REPLY_TO.pop(user_id)
+        try:
+            kb = InlineKeyboardMarkup(row_width=1)
+            kb.add(InlineKeyboardButton("✍️ Спросить ещё", callback_data="consult"))
+            kb.add(InlineKeyboardButton("✅ Мне всё понятно, спасибо", callback_data="main"))
 
-        await bot.send_message(
-            client_id,
-            f"⚖️ <b>Ответ юриста:</b>\n\n{text}",
-            reply_markup=kb
-        )
+            await bot.send_message(
+                client_id,
+                f"⚖️ <b>Ответ юриста:</b>\n\n{text}",
+                reply_markup=kb
+            )
 
-        await message.answer("✅ Ответ отправлен клиенту.")
-    except Exception as e:
-        await message.answer(f"❌ Не удалось отправить ответ: {e}")
-    return
+            await message.answer("✅ Ответ отправлен клиенту.")
+        except Exception as e:
+            await message.answer(f"❌ Не удалось отправить ответ: {e}")
+        return
 
     mode = USER_MODE.get(user_id)
 
