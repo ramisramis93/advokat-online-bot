@@ -436,19 +436,6 @@ async def text_handler(message: types.Message):
         await message.answer("⛔ Сообщение похоже на спам. Ссылки и слишком длинные сообщения не принимаются.")
         return
 
-    mode = USER_MODE.get(user_id)
-
-    if mode == "consult":
-        await notify_admin(message)
-
-        USER_MODE[user_id] = "main"
-
-        await message.answer(
-            "✅ Запрос принят. Мы свяжемся с вами после рассмотрения.\n\n🏠 Главное меню:",
-            reply_markup=main_menu()
-        )
-        return
-
     # Поиск включается либо кнопкой, либо обычным текстом.
     q = normalize_query(text)
     if len(q) < 3:
