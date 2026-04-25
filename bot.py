@@ -427,7 +427,7 @@ async def callbacks(call: types.CallbackQuery):
         await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
 
     elif data == "topics":
-        await call.message.answer("📚 <b>Выберите раздел</b>", reply_markup=topics_menu())
+        await call.message.answer("📚 <b>Полезные советы</b>\n\nВыберите тему:", reply_markup=topics_menu())
 
     elif data.startswith("topic:"):
         idx = int(data.split(":", 1)[1])
