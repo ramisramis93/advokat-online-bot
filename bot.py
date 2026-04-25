@@ -168,7 +168,7 @@ def button(text: str, data: str) -> InlineKeyboardButton:
 
 def main_menu() -> InlineKeyboardMarkup:
     kb = InlineKeyboardMarkup(row_width=1)
-    kb.add(button("📚 Разобрать ситуацию", "topics"))
+    kb.add(button("📚 Полезные ответы", "topics"))
     kb.add(button("📝 Задать вопрос", "consult"))
     kb.add(button("🔎 Найти ответ", "search"))
     kb.add(InlineKeyboardButton("ℹ️ Как пользоваться", callback_data="help"))
