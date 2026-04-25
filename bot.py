@@ -368,9 +368,15 @@ async def callbacks(call: types.CallbackQuery):
         await call.answer()
         return
 
-    if data == "cancel_admin_reply":
-        ADMIN_REPLY_TO.pop(call.from_user.id, None)
-        await call.message.answer("❌ Ответ клиенту отменён.")
+    if data.startswith("status_work:"):
+        client_id = int(data.split(":", 1)[1])
+        await call.message.answer(f"🟡 Заявка клиента <code>{client_id}</code> взята в работу.")
+        await call.answer()
+        return
+
+    if data.startswith("status_closed:"):
+        client_id = int(data.split(":", 1)[1])
+        await call.message.answer(f"✅ Заявка клиента <code>{client_id}</code> закрыта.")
         await call.answer()
         return
 
