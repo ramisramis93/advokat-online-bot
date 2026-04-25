@@ -400,8 +400,8 @@ async def text_handler(message: types.Message):
         return
 
     if is_spam(text):
-    await message.answer("⛔ Сообщение похоже на спам. Ссылки и слишком длинные сообщения не принимаются.")
-    return
+        await message.answer("⛔ Сообщение похоже на спам. Ссылки и слишком длинные сообщения не принимаются.")
+        return
 
 mode = USER_MODE.get(user_id)
 
