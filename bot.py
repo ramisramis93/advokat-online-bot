@@ -264,6 +264,8 @@ async def notify_admin(message: types.Message) -> None:
 
     kb = InlineKeyboardMarkup(row_width=1)
     kb.add(InlineKeyboardButton("✍️ Ответить клиенту", callback_data=f"admin_reply:{user.id}"))
+    kb.add(InlineKeyboardButton("🟡 В работе", callback_data=f"status_work:{user.id}"))
+    kb.add(InlineKeyboardButton("✅ Закрыто", callback_data=f"status_closed:{user.id}"))
 
     try:
         admin_id = int(ADMIN_ID.strip())
