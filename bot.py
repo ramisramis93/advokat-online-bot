@@ -409,6 +409,20 @@ async def callbacks(call: types.CallbackQuery):
         await call.answer()
         return
 
+    if data == "help":
+        await call.message.answer(
+            "ℹ️ <b>Как пользоваться ботом</b>\n\n"
+            "📚 <b>Разобрать ситуацию</b> — выберите тему и получите ответ.\n"
+            "📝 <b>Задать вопрос</b> — опишите свою ситуацию одним сообщением.\n"
+            "🔎 <b>Найти ответ</b> — поиск по ключевым словам.\n\n"
+            "💬 Консультация бесплатная.\n"
+            "Если потребуется подробный разбор — помогу отдельно.\n\n"
+            "📩 После ответа вы можете задать уточняющий вопрос или завершить диалог.",
+            reply_markup=main_menu()
+        )
+        await call.answer()
+        return
+
     if data == "main":
         await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
 
