@@ -167,9 +167,9 @@ def button(text: str, data: str) -> InlineKeyboardButton:
 
 def main_menu() -> InlineKeyboardMarkup:
     kb = InlineKeyboardMarkup(row_width=1)
-    kb.add(button("📚 Разделы", "topics"))
-    kb.add(button("🔎 Поиск", "search"))
-    kb.add(button("📝 Консультация", "consult"))
+    kb.add(button("📚 Разобрать ситуацию", "topics"))
+    kb.add(button("📝 Задать вопрос", "consult"))
+    kb.add(button("🔎 Найти ответ", "search"))
     return kb
 
 
@@ -223,7 +223,7 @@ def prepare_answer(answer_id: int) -> str:
     # Telegram limit is 4096; leave room for footer.
     if len(raw) > 3400:
         raw = raw[:3400].rsplit(" ", 1)[0] + "…\n\n<i>Текст сокращен. Для полной оценки ситуации можно направить запрос на консультацию.</i>"
-    return f"⚖️ <b>{title_from_text(raw)}</b>\n\n{raw}\n\n—\nНужна помощь по вашей ситуации?"
+    return f"⚖️ <b>{title_from_text(raw)}</b>\n\n{raw}\n\n—\nЕсли ситуация требует разбора — напишите, помогу."
 
 
 def is_spam(text: str) -> bool:
@@ -291,12 +291,13 @@ async def start(message: types.Message):
             f"✅ Админ определён. Ваш Telegram ID: <code>{message.from_user.id}</code>\n\n"
             "Скопируйте это число в Railway → Variables → ADMIN_ID."
         )
-        await message.answer(
-            "👋 <b>Адвокат онлайн</b>\n\n"
-            "Кратко и по делу\n\n"
-            "Выберите раздел или задайте свой вопрос.",
-            reply_markup=main_menu()
-        )
+    await message.answer(
+        "👋 <b>Адвокат онлайн</b>\n\n"
+        "Помогаю разобраться в юридических вопросах.\n"
+        "Кратко и по делу.\n\n"
+        "Выберите, что вам нужно:",
+        reply_markup=main_menu()
+    )
 
 
 @dp.message_handler(commands=["myid"])
@@ -371,7 +372,7 @@ async def callbacks(call: types.CallbackQuery):
     elif data == "consult":
         USER_MODE[call.from_user.id] = "consult"
         await call.message.answer(
-            "📝 Опишите вашу ситуацию одним сообщением.\n\n"
+            "📝 Кратко опишите вашу ситуацию одним сообщением.\n\nЯ изучу и дам ответ."
             "Сообщение уйдет администратору бота."
         )
     await call.answer()
