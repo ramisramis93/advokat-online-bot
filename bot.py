@@ -678,6 +678,24 @@ async def text_handler(message: types.Message):
     mode = USER_MODE.get(user_id)
 
     if mode == "consult":
+        count = USER_MESSAGE_COUNT.get(user_id, 0)
+        limit = USER_MESSAGE_LIMIT.get(user_id, FREE_MESSAGE_LIMIT)
+
+        if count >= limit:
+            kb = InlineKeyboardMarkup(row_width=1)
+            kb.add(InlineKeyboardButton("⭐ Продолжить консультацию", callback_data="support_project"))
+            kb.add(InlineKeyboardButton("🏠 Главное меню", callback_data="main"))
+
+            await message.answer(
+                "⛔ Лимит сообщений исчерпан.\n\n"
+                f"Ваш лимит: {limit} сообщений.\n"
+                "Чтобы продолжить консультацию, выберите вариант ниже:",
+                reply_markup=kb
+            )
+            return
+
+        USER_MESSAGE_COUNT[user_id] = count + 1
+
         history = DIALOG_HISTORY.get(user_id, [])
         history.append(f"Клиент:\n{text}")
         DIALOG_HISTORY[user_id] = history[-30:]
