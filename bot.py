@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 from aiogram import Bot, Dispatcher, types
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, LabeledPrice
 from aiogram.utils import executor
 from dotenv import load_dotenv
 
