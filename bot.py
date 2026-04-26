@@ -627,12 +627,27 @@ async def process_pre_checkout_query(pre_checkout_query: types.PreCheckoutQuery)
 async def successful_payment(message: types.Message):
     payment = message.successful_payment
     amount = payment.total_amount
+    user_id = message.from_user.id
+
+    # увеличиваем лимит сообщений
+    USER_MESSAGE_LIMIT[user_id] = USER_MESSAGE_LIMIT.get(user_id, FREE_MESSAGE_LIMIT) + amount
 
     await message.answer(
         "🙏 Спасибо за поддержку!\n\n"
-        f"Получено: {amount} ⭐\n"
-        "Это помогает развивать проект."
+        f"Вам добавлено: {amount} сообщений ⭐\n"
+        f"Ваш новый лимит: {USER_MESSAGE_LIMIT[user_id]}"
     )
+
+    try:
+        admin_id = int(ADMIN_ID.strip())
+        await bot.send_message(
+            admin_id,
+            f"⭐ Пользователь купил +{amount} сообщений\n\n"
+            f"👤 @{message.from_user.username if message.from_user.username else 'без username'}\n"
+            f"🆔 <code>{user_id}</code>"
+        )
+    except Exception:
+        pass
 
     try:
         admin_id = int(ADMIN_ID.strip())
