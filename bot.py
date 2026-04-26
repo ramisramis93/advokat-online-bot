@@ -713,6 +713,7 @@ async def text_handler(message: types.Message):
             return
 
         USER_MESSAGE_COUNT[user_id] = count + 1
+        remaining = limit - USER_MESSAGE_COUNT[user_id]
 
         history = DIALOG_HISTORY.get(user_id, [])
         history.append(f"Клиент:\n{text}")
@@ -729,7 +730,9 @@ async def text_handler(message: types.Message):
         USER_MODE[user_id] = "main"
 
         await message.answer(
-            "✅ Запрос принят. Мы свяжемся с вами после рассмотрения.\n\n🏠 Главное меню:",
+            "✅ Запрос принят. Мы свяжемся с вами после рассмотрения.\n\n"
+            f"💬 Осталось сообщений: <b>{remaining}</b>\n\n"
+            "🏠 Главное меню:",
             reply_markup=main_menu()
         )
         return
