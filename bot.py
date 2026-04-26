@@ -854,6 +854,57 @@ def get_stats_sheet():
     return spreadsheet.worksheet("Статистика")
 
 
+def update_stats(new_client=False, message=False, closed=False, stars=0):
+    try:
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+
+        today = datetime.now(ZoneInfo("Europe/Moscow")).strftime("%Y-%m-%d")
+
+        sheet = get_stats_sheet()
+        rows = sheet.get_all_values()
+
+        row_number = None
+        for i, row in enumerate(rows, start=1):
+            if row and row[0] == today:
+                row_number = i
+                break
+
+        if not row_number:
+            sheet.append_row([today, 0, 0, 0, 0, 0])
+            row_number = len(sheet.get_all_values())
+
+        values = sheet.row_values(row_number)
+
+        new_clients = int(values[1])
+        messages = int(values[2])
+        closed_dialogs = int(values[3])
+        payments = int(values[4])
+        stars_total = int(values[5])
+
+        if new_client:
+            new_clients += 1
+        if message:
+            messages += 1
+        if closed:
+            closed_dialogs += 1
+        if stars > 0:
+            payments += 1
+            stars_total += stars
+
+        sheet.update_row(row_number, [
+            today,
+            new_clients,
+            messages,
+            closed_dialogs,
+            payments,
+            stars_total
+        ])
+
+    except Exception as e:
+        print("Ошибка статистики:", e)
+
+
 async def on_startup(dp):
     await bot.delete_webhook(drop_pending_updates=True)
 
