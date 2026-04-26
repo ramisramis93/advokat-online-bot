@@ -347,8 +347,10 @@ async def sheettest(message: types.Message):
 
         sheet = client.open("Заявки бот").sheet1
 
-        from datetime import datetime
-        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+now = datetime.now(ZoneInfo("Europe/Moscow")).strftime("%Y-%m-%d %H:%M")
 
         sheet.append_row([
             now,
@@ -630,7 +632,9 @@ async def text_handler(message: types.Message):
 def save_dialog_to_sheet(user_id: int, status: str = "новая"):
     try:
         from datetime import datetime
-        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        from zoneinfo import ZoneInfo
+
+        now = datetime.now(ZoneInfo("Europe/Moscow")).strftime("%Y-%m-%d %H:%M")
 
         info = CLIENT_INFO.get(user_id, {})
         username = info.get("username", "без username")
