@@ -174,6 +174,7 @@ def main_menu() -> InlineKeyboardMarkup:
     kb.add(button("📚 Полезные ответы", "topics"))
     kb.add(button("📝 Задать вопрос", "consult"))
     kb.add(button("🔎 Найти ответ", "search"))
+    kb.add(button("⭐ Поддержать проект", "support_project"))
     kb.add(InlineKeyboardButton("ℹ️ Как пользоваться", callback_data="help"))
     return kb
 
