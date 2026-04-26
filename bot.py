@@ -326,6 +326,43 @@ async def start(message: types.Message):
 async def myid(message: types.Message):
     await message.answer(f"Ваш Telegram ID: <code>{message.from_user.id}</code>")
     
+@dp.message_handler(commands=["sheettest"])
+async def sheettest(message: types.Message):
+    if str(message.from_user.id) != str(ADMIN_ID).strip():
+        await message.answer("⛔ Команда доступна только администратору.")
+        return
+
+    try:
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+
+        creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+        client = gspread.authorize(creds)
+
+        sheet = client.open("Заявки бот").sheet1
+
+        from datetime import datetime
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        sheet.append_row([
+            now,
+            message.from_user.id,
+            f"@{message.from_user.username}" if message.from_user.username else "без username",
+            message.from_user.first_name or "",
+            "Тестовая запись из бота",
+            "тест",
+            "telegram_bot",
+            now
+        ])
+
+        await message.answer("✅ Тестовая запись добавлена в Google Таблицу.")
+
+    except Exception as e:
+        await message.answer(f"❌ Ошибка Google Таблицы:\n<code>{e}</code>")
+
+
 @dp.message_handler(commands=["testadmin"])
 async def testadmin(message: types.Message):
     if not ADMIN_ID:
@@ -337,6 +374,7 @@ async def testadmin(message: types.Message):
         await message.answer("✅ Отправлено админу")
     except Exception as e:
         await message.answer(f"Ошибка: {e}")
+
 
 @dp.message_handler(commands=["reply"])
 async def reply_to_user(message: types.Message):
@@ -364,7 +402,8 @@ async def reply_to_user(message: types.Message):
         await message.answer("✅ Ответ отправлен клиенту.")
     except Exception as e:
         await message.answer(f"❌ Не удалось отправить ответ: {e}")
-        
+
+
 @dp.callback_query_handler(lambda c: True)
 async def callbacks(call: types.CallbackQuery):
     data = call.data or ""
@@ -382,7 +421,6 @@ async def callbacks(call: types.CallbackQuery):
         )
         await call.answer()
         return
-
     if data == "cancel_admin_reply":
         ADMIN_REPLY_TO.pop(call.from_user.id, None)
         await call.message.answer("❌ Ответ клиенту отменён.")
