@@ -647,11 +647,12 @@ async def text_handler(message: types.Message):
     if user_id in ADMIN_REPLY_TO:
         client_id = ADMIN_REPLY_TO.pop(user_id)
         FOLLOW_UP_SENT[client_id] = True
+
         try:
             kb = InlineKeyboardMarkup(row_width=1)
-    kb.add(InlineKeyboardButton("✍️ Спросить ещё", callback_data="consult"))
-    kb.add(InlineKeyboardButton("⭐ Отблагодарить Stars", callback_data="support_project"))
-    kb.add(InlineKeyboardButton("✅ Мне всё понятно, спасибо", callback_data="client_done"))
+            kb.add(InlineKeyboardButton("✍️ Спросить ещё", callback_data="consult"))
+            kb.add(InlineKeyboardButton("⭐ Отблагодарить Stars", callback_data="support_project"))
+            kb.add(InlineKeyboardButton("✅ Мне всё понятно, спасибо", callback_data="client_done"))
 
             await bot.send_message(
                 client_id,
@@ -665,8 +666,10 @@ async def text_handler(message: types.Message):
             save_dialog_to_sheet(client_id, status="отвечено")
 
             await message.answer("✅ Ответ отправлен клиенту.")
+
         except Exception as e:
             await message.answer(f"❌ Не удалось отправить ответ: {e}")
+
         return
 
     mode = USER_MODE.get(user_id)
