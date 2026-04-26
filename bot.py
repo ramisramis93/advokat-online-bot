@@ -604,8 +604,11 @@ async def callbacks(call: types.CallbackQuery):
     elif data == "consult":
         USER_MODE[call.from_user.id] = "consult"
         await call.message.answer(
-            "📝 Кратко опишите вашу ситуацию одним сообщением.\n\n"
-            "Я изучу и дам ответ."
+            "📝 <b>Консультация</b>\n\n"
+            "Кратко опишите вашу ситуацию одним сообщением.\n\n"
+            "⚠️ Бесплатный лимит: <b>10 сообщений</b>.\n"
+            "После этого можно продолжить консультацию через ⭐ Stars.\n\n"
+            "✍️ Напишите ваш вопрос:"
         )
 
     await call.answer()
