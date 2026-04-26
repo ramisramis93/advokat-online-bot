@@ -512,7 +512,9 @@ async def callbacks(call: types.CallbackQuery):
             pass
 
         USER_MODE[user_id] = "main"
-
+        
+        update_stats(closed=True)
+        
         kb = InlineKeyboardMarkup(row_width=1)
         kb.add(InlineKeyboardButton("⭐ Отблагодарить Stars", callback_data="support_project"))
         kb.add(InlineKeyboardButton("🏠 Главное меню", callback_data="main"))
