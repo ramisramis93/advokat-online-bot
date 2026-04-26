@@ -532,7 +532,7 @@ async def text_handler(message: types.Message):
         }
 
         print("SHEET TEST: перед записью в таблицу")
-        save_dialog_to_sheet(user_id, status="новая")
+        # save_dialog_to_sheet(user_id, status="новая")
         print("SHEET TEST: после записи в таблицу")
 
         await notify_admin(message)
