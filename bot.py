@@ -631,9 +631,9 @@ def save_dialog_to_sheet(user_id: int, status: str = "новая"):
         row = find_sheet_row(sheet, user_id)
 
         if row:
-            sheet.update_cell(row, 5, full_text)       # Переписка
-            sheet.update_cell(row, 6, status)          # Статус
-            sheet.update_cell(row, 8, now)             # Последнее действие
+            sheet.update_cell(row, 5, full_text)
+            sheet.update_cell(row, 6, status)
+            sheet.update_cell(row, 8, now)
         else:
             sheet.append_row([
                 now,
@@ -647,13 +647,18 @@ def save_dialog_to_sheet(user_id: int, status: str = "новая"):
             ])
             SHEET_ROWS[user_id] = len(sheet.get_all_values())
 
+        print("✅ Таблица обновлена")
+
     except Exception as e:
         print("Ошибка записи в таблицу:", e)
 
-
-async def on_startup(dp):
-    await bot.delete_webhook(drop_pending_updates=True)
-
-
-if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
+        try:
+            admin_id = int(ADMIN_ID.strip())
+            asyncio.create_task(
+                bot.send_message(
+                    admin_id,
+                    f"❌ Ошибка записи в Google Таблицу:\n<code>{e}</code>"
+                )
+            )
+        except Exception as notify_error:
+            print("Ошибка уведомления админу:", notify_error)
