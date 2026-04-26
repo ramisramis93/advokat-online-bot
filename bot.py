@@ -840,6 +840,20 @@ def save_dialog_to_sheet(user_id: int, status: str = "новая"):
         print("❌ Ошибка записи в таблицу:", e)
 
 
+def get_stats_sheet():
+    scope = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive"
+    ]
+
+    creds_dict = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    client = gspread.authorize(creds)
+
+    spreadsheet = client.open("Заявки бот")
+    return spreadsheet.worksheet("Статистика")
+
+
 async def on_startup(dp):
     await bot.delete_webhook(drop_pending_updates=True)
 
