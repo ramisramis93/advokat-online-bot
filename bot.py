@@ -543,8 +543,9 @@ async def text_handler(message: types.Message):
         FOLLOW_UP_SENT[client_id] = True
         try:
             kb = InlineKeyboardMarkup(row_width=1)
-            kb.add(InlineKeyboardButton("✍️ Спросить ещё", callback_data="consult"))
-            kb.add(InlineKeyboardButton("✅ Мне всё понятно, спасибо", callback_data="client_done"))
+    kb.add(InlineKeyboardButton("✍️ Спросить ещё", callback_data="consult"))
+    kb.add(InlineKeyboardButton("⭐ Отблагодарить Stars", callback_data="support_project"))
+    kb.add(InlineKeyboardButton("✅ Мне всё понятно, спасибо", callback_data="client_done"))
 
             await bot.send_message(
                 client_id,
