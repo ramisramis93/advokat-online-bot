@@ -340,7 +340,9 @@ async def sheettest(message: types.Message):
             "https://www.googleapis.com/auth/drive"
         ]
 
-        creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+        import json
+        creds_dict = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
         client = gspread.authorize(creds)
 
         sheet = client.open("Заявки бот").sheet1
