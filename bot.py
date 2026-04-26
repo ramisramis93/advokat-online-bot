@@ -491,6 +491,45 @@ async def callbacks(call: types.CallbackQuery):
         await call.answer()
         return
 
+    if data == "support_project":
+        kb = InlineKeyboardMarkup(row_width=2)
+        kb.add(
+            InlineKeyboardButton("⭐ 5", callback_data="donate_stars:5"),
+            InlineKeyboardButton("⭐ 10", callback_data="donate_stars:10")
+        )
+        kb.add(
+            InlineKeyboardButton("⭐ 20", callback_data="donate_stars:20"),
+            InlineKeyboardButton("⭐ 50", callback_data="donate_stars:50")
+        )
+        kb.add(InlineKeyboardButton("🏠 Главное меню", callback_data="main"))
+
+        await call.message.answer(
+            "⭐ <b>Поддержать проект</b>\n\n"
+            "Если бот оказался полезен, можно отблагодарить Stars.\n\n"
+            "Выберите удобную сумму:",
+            reply_markup=kb
+        )
+        await call.answer()
+        return
+
+    if data.startswith("donate_stars:"):
+        amount = int(data.split(":", 1)[1])
+
+        await bot.send_invoice(
+            chat_id=call.message.chat.id,
+            title="Поддержка проекта",
+            description=f"Благодарность за помощь — {amount} Stars",
+            payload=f"donation_{amount}_{call.from_user.id}",
+            provider_token="",
+            currency="XTR",
+            prices=[
+                LabeledPrice(label="Поддержка проекта", amount=amount)
+            ]
+        )
+
+        await call.answer()
+        return
+
     if data == "main":
         await call.message.answer("🏠 <b>Главное меню</b>", reply_markup=main_menu())
 
