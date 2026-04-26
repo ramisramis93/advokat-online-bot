@@ -553,7 +553,7 @@ async def text_handler(message: types.Message):
 
             history = DIALOG_HISTORY.get(client_id, [])
             history.append(f"Юрист:\n{text}")
-            DIALOG_HISTORY[client_id] = history[-10:]
+            DIALOG_HISTORY[client_id] = history[-30:]
             save_dialog_to_sheet(client_id, status="отвечено")
 
             await message.answer("✅ Ответ отправлен клиенту.")
@@ -566,7 +566,7 @@ async def text_handler(message: types.Message):
     if mode == "consult":
         history = DIALOG_HISTORY.get(user_id, [])
         history.append(f"Клиент:\n{text}")
-        DIALOG_HISTORY[user_id] = history[-10:]
+        DIALOG_HISTORY[user_id] = history[-30:]
         CLIENT_INFO[user_id] = {
             "username": f"@{message.from_user.username}" if message.from_user.username else "без username",
             "name": message.from_user.first_name or ""
