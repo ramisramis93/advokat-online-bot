@@ -611,6 +611,34 @@ async def callbacks(call: types.CallbackQuery):
     await call.answer()
 
 
+@dp.pre_checkout_query_handler(lambda query: True)
+async def process_pre_checkout_query(pre_checkout_query: types.PreCheckoutQuery):
+    await bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
+
+
+@dp.message_handler(content_types=types.ContentType.SUCCESSFUL_PAYMENT)
+async def successful_payment(message: types.Message):
+    payment = message.successful_payment
+    amount = payment.total_amount
+
+    await message.answer(
+        "🙏 Спасибо за поддержку!\n\n"
+        f"Получено: {amount} ⭐\n"
+        "Это помогает развивать проект."
+    )
+
+    try:
+        admin_id = int(ADMIN_ID.strip())
+        await bot.send_message(
+            admin_id,
+            f"⭐ Пользователь поддержал проект на {amount} Stars.\n\n"
+            f"👤 @{message.from_user.username if message.from_user.username else 'без username'}\n"
+            f"🆔 <code>{message.from_user.id}</code>"
+        )
+    except Exception:
+        pass
+
+
 @dp.message_handler(content_types=types.ContentTypes.TEXT)
 async def text_handler(message: types.Message):
     user_id = message.from_user.id
