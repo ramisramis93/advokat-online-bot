@@ -628,8 +628,42 @@ async def text_handler(message: types.Message):
 
 
 def save_dialog_to_sheet(user_id: int, status: str = "новая"):
-    # Google Таблица временно отключена, чтобы бот работал стабильно.
-    return
+    try:
+        from datetime import datetime
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        info = CLIENT_INFO.get(user_id, {})
+        username = info.get("username", "без username")
+        name = info.get("name", "")
+        history = DIALOG_HISTORY.get(user_id, [])
+        full_text = "\n\n".join(history) if history else ""
+
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+
+        creds_dict = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+        client = gspread.authorize(creds)
+
+        sheet = client.open("Заявки бот").sheet1
+
+        sheet.append_row([
+            now,
+            user_id,
+            username,
+            name,
+            full_text,
+            status,
+            "telegram_bot",
+            now
+        ])
+
+        print("✅ Записано в таблицу")
+
+    except Exception as e:
+        print("❌ Ошибка записи в таблицу:", e)
 
 
 async def on_startup(dp):
