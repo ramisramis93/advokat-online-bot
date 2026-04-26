@@ -639,6 +639,8 @@ async def successful_payment(message: types.Message):
     # увеличиваем лимит сообщений
     USER_MESSAGE_LIMIT[user_id] = USER_MESSAGE_LIMIT.get(user_id, FREE_MESSAGE_LIMIT) + amount
 
+    update_stats(stars=amount)
+
     await message.answer(
         "🙏 Спасибо за поддержку!\n\n"
         f"Вам добавлено: {amount} сообщений ⭐\n"
