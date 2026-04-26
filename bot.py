@@ -913,6 +913,17 @@ def update_stats(new_client=False, message=False, closed=False, stars=0):
     except Exception as e:
         print("Ошибка статистики:", e)
 
+        try:
+            admin_id = int(ADMIN_ID.strip())
+            asyncio.create_task(
+                bot.send_message(
+                    admin_id,
+                    f"❌ Ошибка статистики:\n<code>{e}</code>"
+                )
+            )
+        except Exception:
+            pass
+
 
 async def on_startup(dp):
     await bot.delete_webhook(drop_pending_updates=True)
