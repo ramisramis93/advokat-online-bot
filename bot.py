@@ -335,22 +335,21 @@ async def sheettest(message: types.Message):
         return
 
     try:
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+
         scope = [
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive"
         ]
 
-        import json
         creds_dict = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
         client = gspread.authorize(creds)
 
         sheet = client.open("Заявки бот").sheet1
 
-from datetime import datetime
-from zoneinfo import ZoneInfo
-
-now = datetime.now(ZoneInfo("Europe/Moscow")).strftime("%Y-%m-%d %H:%M")
+        now = datetime.now(ZoneInfo("Europe/Moscow")).strftime("%Y-%m-%d %H:%M")
 
         sheet.append_row([
             now,
