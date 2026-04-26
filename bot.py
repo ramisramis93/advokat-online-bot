@@ -513,9 +513,14 @@ async def callbacks(call: types.CallbackQuery):
 
         USER_MODE[user_id] = "main"
 
+        kb = InlineKeyboardMarkup(row_width=1)
+        kb.add(InlineKeyboardButton("⭐ Отблагодарить Stars", callback_data="support_project"))
+        kb.add(InlineKeyboardButton("🏠 Главное меню", callback_data="main"))
+
         await call.message.answer(
-            "✅ Спасибо за обращение.\n\n🏠 Главное меню:",
-            reply_markup=main_menu()
+            "✅ Спасибо за обращение.\n\n"
+            "Если бот оказался полезен, можно поддержать проект ⭐",
+            reply_markup=kb
         )
         await call.answer()
         return
