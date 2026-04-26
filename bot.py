@@ -617,6 +617,8 @@ def find_sheet_row(sheet, user_id: int):
 
 
 def save_dialog_to_sheet(user_id: int, status: str = "новая"):
+    return
+
     try:
         from datetime import datetime
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
