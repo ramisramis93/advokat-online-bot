@@ -649,16 +649,29 @@ def save_dialog_to_sheet(user_id: int, status: str = "новая"):
 
         sheet = client.open("Заявки бот").sheet1
 
-        sheet.append_row([
-            now,
-            user_id,
-            username,
-            name,
-            full_text,
-            status,
-            "telegram_bot",
-            now
-        ])
+        rows = sheet.get_all_values()
+
+        row_number = None
+        for i, row in enumerate(rows, start=1):
+            if len(row) > 1 and str(row[1]).strip() == str(user_id):
+                row_number = i
+                break
+
+        if row_number:
+            sheet.update_cell(row_number, 5, full_text)
+            sheet.update_cell(row_number, 6, status)
+            sheet.update_cell(row_number, 8, now)
+        else:
+            sheet.append_row([
+                now,
+                user_id,
+                username,
+                name,
+                full_text,
+                status,
+                "telegram_bot",
+                now
+            ])
 
         print("✅ Записано в таблицу")
 
