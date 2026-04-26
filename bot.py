@@ -160,6 +160,10 @@ DIALOG_HISTORY: Dict[int, list] = {}
 CLIENT_INFO: Dict[int, dict] = {}
 SHEET_ROWS: Dict[int, int] = {}
 
+USER_MESSAGE_COUNT: Dict[int, int] = {}
+USER_MESSAGE_LIMIT: Dict[int, int] = {}
+FREE_MESSAGE_LIMIT = 10
+
 def is_admin(message: types.Message) -> bool:
     username = (message.from_user.username or "").lower()
     return username == ADMIN_USERNAME.lower()
