@@ -664,3 +664,11 @@ def save_dialog_to_sheet(user_id: int, status: str = "новая"):
             )
         except Exception as notify_error:
             print("Ошибка уведомления админу:", notify_error)
+
+async def on_startup(dp):
+    await bot.delete_webhook(drop_pending_updates=True)
+
+
+if __name__ == "__main__":
+    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
+    
