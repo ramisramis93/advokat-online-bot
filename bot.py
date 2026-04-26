@@ -720,6 +720,11 @@ async def text_handler(message: types.Message):
         USER_MESSAGE_COUNT[user_id] = count + 1
         remaining = limit - USER_MESSAGE_COUNT[user_id]
 
+        update_stats(message=True)
+
+        if count == 0:
+            update_stats(new_client=True)
+
         history = DIALOG_HISTORY.get(user_id, [])
         history.append(f"Клиент:\n{text}")
         DIALOG_HISTORY[user_id] = history[-30:]
