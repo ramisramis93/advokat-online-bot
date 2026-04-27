@@ -934,12 +934,9 @@ async def daily_report():
             now = datetime.now(ZoneInfo("Europe/Moscow"))
             target = now + timedelta(seconds=60)
 
-            if now >= target:
-                target += timedelta(days=1)
-
             await asyncio.sleep((target - now).total_seconds())
 
-            yesterday = (target - timedelta(days=1)).strftime("%Y-%m-%d")
+            yesterday = now.strftime("%Y-%m-%d")
 
             sheet = get_stats_sheet()
             rows = sheet.get_all_values()
@@ -948,7 +945,7 @@ async def daily_report():
                 if row and row[0] == yesterday:
                     await bot.send_message(
                         int(ADMIN_ID),
-                        "📊 Статистика за вчера\n\n"
+                        f"📊 Статистика за {yesterday}\n\n"
                         f"👥 Новые клиенты: {row[1]}\n"
                         f"💬 Сообщения: {row[2]}\n"
                         f"✅ Закрыто: {row[3]}\n"
