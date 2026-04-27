@@ -932,11 +932,11 @@ async def daily_report():
             from zoneinfo import ZoneInfo
 
             now = datetime.now(ZoneInfo("Europe/Moscow"))
-            target = now + timedelta(seconds=60)
+            target = now.replace(hour=8, minute=0, second=0, microsecond=0)
 
             await asyncio.sleep((target - now).total_seconds())
 
-            yesterday = now.strftime("%Y-%m-%d")
+            yesterday = (target - timedelta(days=1)).strftime("%Y-%m-%d")
 
             sheet = get_stats_sheet()
             rows = sheet.get_all_values()
