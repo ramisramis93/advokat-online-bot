@@ -901,14 +901,14 @@ def update_stats(new_client=False, message=False, closed=False, stars=0):
             payments += 1
             stars_total += stars
 
-sheet.update(f"A{row_number}:F{row_number}", [[
-    today,
-    new_clients,
-    messages,
-    closed_dialogs,
-    payments,
-    stars_total
-]])
+        sheet.update(f"A{row_number}:F{row_number}", [[
+            today,
+            new_clients,
+            messages,
+            closed_dialogs,
+            payments,
+            stars_total
+        ]])
 
     except Exception as e:
         print("Ошибка статистики:", e)
