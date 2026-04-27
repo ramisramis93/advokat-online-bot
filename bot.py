@@ -466,7 +466,7 @@ async def callbacks(call: types.CallbackQuery):
     data = call.data or ""
 
     if data == "law_criminal":
-        await call.message.edit_text(
+        await call.message.answer(
             "⚖️ <b>Уголовное право</b>\n\nВыберите раздел:",
             reply_markup=criminal_menu()
         )
@@ -474,7 +474,7 @@ async def callbacks(call: types.CallbackQuery):
         return
 
     if data == "cases":
-        await call.message.edit_text(
+        await call.message.answer(
             "🚔 <b>Выберите ситуацию:</b>",
             reply_markup=cases_menu()
         )
@@ -482,7 +482,7 @@ async def callbacks(call: types.CallbackQuery):
         return
 
     if data == "articles":
-        await call.message.edit_text(
+        await call.message.answer(
             "📚 <b>Основные статьи УК РФ:</b>",
             reply_markup=articles_menu()
         )
