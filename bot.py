@@ -965,6 +965,12 @@ async def daily_report():
 
 async def on_startup(dp):
     await bot.delete_webhook(drop_pending_updates=True)
+
+    try:
+        await bot.send_message(int(ADMIN_ID), "✅ daily_report запущен")
+    except Exception as e:
+        print("Ошибка теста daily_report:", e)
+
     asyncio.create_task(daily_report())
 
 
