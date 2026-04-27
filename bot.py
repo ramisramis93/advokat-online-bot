@@ -188,13 +188,17 @@ def topics_menu() -> InlineKeyboardMarkup:
     return kb
 
 
-def criminal_menu():
+def cases_menu():
     kb = InlineKeyboardMarkup(row_width=1)
 
-    kb.add(InlineKeyboardButton("🚔 Реальные ситуации", callback_data="cases"))
-    kb.add(InlineKeyboardButton("📚 Основные статьи УК РФ", callback_data="articles"))
+    kb.add(InlineKeyboardButton("🚔 Меня остановили с наркотиками", callback_data="case_drugs"))
+    kb.add(InlineKeyboardButton("👮‍♂️ Меня вызывают в полицию", callback_data="case_police"))
+    kb.add(InlineKeyboardButton("📞 Позвонили из полиции — что делать", callback_data="case_police_call"))
+    kb.add(InlineKeyboardButton("🏠 Пришли с обыском", callback_data="case_search"))
+    kb.add(InlineKeyboardButton("📄 Подписал протокол — теперь переживаю", callback_data="case_protocol"))
+    kb.add(InlineKeyboardButton("⚖️ Меня вызывают в суд", callback_data="case_court"))
 
-    kb.add(InlineKeyboardButton("⬅️ Назад", callback_data="topics"))
+    kb.add(InlineKeyboardButton("⬅️ Назад", callback_data="law_criminal"))
 
     return kb
 
