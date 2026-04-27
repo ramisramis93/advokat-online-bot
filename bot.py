@@ -932,7 +932,7 @@ async def daily_report():
             from zoneinfo import ZoneInfo
 
             now = datetime.now(ZoneInfo("Europe/Moscow"))
-            target = now.replace(hour=12, minute=50, second=0, microsecond=0)
+            target = now + timedelta(seconds=60)
 
             if now >= target:
                 target += timedelta(days=1)
