@@ -465,21 +465,21 @@ async def reply_to_user(message: types.Message):
 async def callbacks(call: types.CallbackQuery):
     data = call.data or ""
 
-if data == "law_criminal":
-    await call.message.answer(
-        "⚖️ <b>Уголовное право</b>\n\nВыберите раздел:",
-        reply_markup=criminal_menu()
-    )
-    await call.answer()
-    return
+    if data == "law_criminal":
+        await call.message.answer(
+            "⚖️ <b>Уголовное право</b>\n\nВыберите раздел:",
+            reply_markup=criminal_menu()
+        )
+        await call.answer()
+        return
 
-if data == "cases":
-    await call.message.answer(
-        "🚔 <b>Выберите ситуацию:</b>",
-        reply_markup=cases_menu()
-    )
-    await call.answer()
-    return
+    if data == "cases":
+        await call.message.answer(
+            "🚔 <b>Выберите ситуацию:</b>",
+            reply_markup=cases_menu()
+        )
+        await call.answer()
+        return
 
     if data == "articles":
         await call.message.answer(
