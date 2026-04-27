@@ -426,6 +426,14 @@ async def reply_to_user(message: types.Message):
 async def callbacks(call: types.CallbackQuery):
     data = call.data or ""
 
+    if data == "law_criminal":
+        await call.message.answer(
+            "⚖️ <b>Уголовное право</b>\n\nВыберите раздел:",
+            reply_markup=criminal_menu()
+        )
+        await call.answer()
+        return
+
     if data == "support_project":
         kb = InlineKeyboardMarkup(row_width=2)
         kb.add(
