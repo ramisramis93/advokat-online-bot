@@ -481,13 +481,13 @@ if data == "cases":
     await call.answer()
     return
 
-if data == "articles":
-    await call.message.answer(
-        "📚 <b>Основные статьи УК РФ:</b>",
-        reply_markup=articles_menu()
-    )
-    await call.answer()
-    return
+    if data == "articles":
+        await call.message.answer(
+            "📚 <b>Основные статьи УК РФ:</b>",
+            reply_markup=articles_menu()
+        )
+        await call.answer()
+        return
 
     if data == "support_project":
         kb = InlineKeyboardMarkup(row_width=2)
