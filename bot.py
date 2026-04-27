@@ -188,6 +188,17 @@ def topics_menu() -> InlineKeyboardMarkup:
     return kb
 
 
+def criminal_menu():
+    kb = InlineKeyboardMarkup(row_width=1)
+
+    kb.add(InlineKeyboardButton("🚔 Реальные ситуации", callback_data="cases"))
+    kb.add(InlineKeyboardButton("📚 Основные статьи УК РФ", callback_data="articles"))
+
+    kb.add(InlineKeyboardButton("⬅️ Назад", callback_data="topics"))
+
+    return kb
+
+
 def subtopics_menu(topic_idx: int) -> InlineKeyboardMarkup:
     topic_name = list(TOPICS.keys())[topic_idx]
     kb = InlineKeyboardMarkup(row_width=2)
