@@ -177,13 +177,17 @@ def main_menu() -> InlineKeyboardMarkup:
 
 
 def topics_menu() -> InlineKeyboardMarkup:
-    kb = InlineKeyboardMarkup(row_width=2)
+    ...
+    return kb
 
-    for idx, topic in enumerate(TOPICS.keys()):
-        kb.insert(button(topic, f"topic:{idx}"))
 
-    kb.add(InlineKeyboardButton("⚖️ Уголовное право", callback_data="law_criminal"))
-    kb.add(button("🏠 Главное меню", "main"))
+def criminal_menu():
+    kb = InlineKeyboardMarkup(row_width=1)
+
+    kb.add(InlineKeyboardButton("🚔 Реальные ситуации", callback_data="cases"))
+    kb.add(InlineKeyboardButton("📚 Основные статьи УК РФ", callback_data="articles"))
+
+    kb.add(InlineKeyboardButton("⬅️ Назад", callback_data="topics"))
 
     return kb
 
@@ -201,17 +205,6 @@ def cases_menu():
     kb.add(InlineKeyboardButton("⬅️ Назад", callback_data="law_criminal"))
 
     return kb
-
-
-def subtopics_menu(topic_idx: int) -> InlineKeyboardMarkup:
-    topic_name = list(TOPICS.keys())[topic_idx]
-    kb = InlineKeyboardMarkup(row_width=2)
-    for title, answer_id in TOPICS[topic_name].items():
-        if str(answer_id) in ANSWERS:
-            kb.insert(button(title, f"answer:{answer_id}"))
-    kb.add(button("⬅️ Назад", "topics"), button("🏠 Главное меню", "main"))
-    return kb
-
 
 def answer_menu() -> InlineKeyboardMarkup:
     kb = InlineKeyboardMarkup(row_width=1)
