@@ -726,6 +726,7 @@ async def callbacks(call: types.CallbackQuery):
             "✍️ Напишите ваш вопрос:"
         )
 
+    print("CALLBACK DATA:", data)
     await call.answer()
 
 
