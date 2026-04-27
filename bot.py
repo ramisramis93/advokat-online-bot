@@ -925,10 +925,48 @@ def update_stats(new_client=False, message=False, closed=False, stars=0):
             pass
 
 
+async def daily_report():
+    while True:
+        try:
+            from datetime import datetime, timedelta
+            from zoneinfo import ZoneInfo
+
+            now = datetime.now(ZoneInfo("Europe/Moscow"))
+            target = now.replace(hour=8, minute=0, second=0, microsecond=0)
+
+            if now >= target:
+                target += timedelta(days=1)
+
+            await asyncio.sleep((target - now).total_seconds())
+
+            yesterday = (target - timedelta(days=1)).strftime("%Y-%m-%d")
+
+            sheet = get_stats_sheet()
+            rows = sheet.get_all_values()
+
+            for row in rows:
+                if row and row[0] == yesterday:
+                    await bot.send_message(
+                        int(ADMIN_ID),
+                        "📊 Статистика за вчера\n\n"
+                        f"👥 Новые клиенты: {row[1]}\n"
+                        f"💬 Сообщения: {row[2]}\n"
+                        f"✅ Закрыто: {row[3]}\n"
+                        f"💰 Оплат: {row[4]}\n"
+                        f"⭐ Stars: {row[5]}"
+                    )
+                    break
+
+        except Exception as e:
+            print("Ошибка daily_report:", e)
+
+        await asyncio.sleep(60)
+
+
 async def on_startup(dp):
     await bot.delete_webhook(drop_pending_updates=True)
+    asyncio.create_task(daily_report())
 
 
 if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
-    
+    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)  
