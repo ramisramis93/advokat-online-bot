@@ -206,6 +206,48 @@ def cases_menu():
 
     return kb
 
+
+def articles_menu():
+    kb = InlineKeyboardMarkup(row_width=1)
+
+    kb.add(InlineKeyboardButton("105 — Убийство", callback_data="uk_105"))
+    kb.add(InlineKeyboardButton("111 — Тяжкий вред здоровью", callback_data="uk_111"))
+    kb.add(InlineKeyboardButton("112 — Средний вред здоровью", callback_data="uk_112"))
+    kb.add(InlineKeyboardButton("115 — Лёгкий вред здоровью", callback_data="uk_115"))
+    kb.add(InlineKeyboardButton("116 — Побои", callback_data="uk_116"))
+    kb.add(InlineKeyboardButton("119 — Угроза убийством", callback_data="uk_119"))
+    kb.add(InlineKeyboardButton("158 — Кража", callback_data="uk_158"))
+    kb.add(InlineKeyboardButton("159 — Мошенничество", callback_data="uk_159"))
+    kb.add(InlineKeyboardButton("160 — Присвоение или растрата", callback_data="uk_160"))
+    kb.add(InlineKeyboardButton("161 — Грабёж", callback_data="uk_161"))
+    kb.add(InlineKeyboardButton("162 — Разбой", callback_data="uk_162"))
+    kb.add(InlineKeyboardButton("163 — Вымогательство", callback_data="uk_163"))
+    kb.add(InlineKeyboardButton("166 — Угон автомобиля", callback_data="uk_166"))
+    kb.add(InlineKeyboardButton("167 — Умышленное уничтожение имущества", callback_data="uk_167"))
+    kb.add(InlineKeyboardButton("186 — Поддельные деньги", callback_data="uk_186"))
+    kb.add(InlineKeyboardButton("207 — Ложное сообщение о теракте", callback_data="uk_207"))
+    kb.add(InlineKeyboardButton("213 — Хулиганство", callback_data="uk_213"))
+    kb.add(InlineKeyboardButton("222 — Оружие", callback_data="uk_222"))
+    kb.add(InlineKeyboardButton("228 — Хранение наркотиков", callback_data="uk_228"))
+    kb.add(InlineKeyboardButton("228.1 — Сбыт наркотиков", callback_data="uk_228_1"))
+    kb.add(InlineKeyboardButton("264 — ДТП с тяжкими последствиями", callback_data="uk_264"))
+    kb.add(InlineKeyboardButton("264.1 — Повторное вождение в опьянении", callback_data="uk_264_1"))
+    kb.add(InlineKeyboardButton("285 — Злоупотребление полномочиями", callback_data="uk_285"))
+    kb.add(InlineKeyboardButton("286 — Превышение полномочий", callback_data="uk_286"))
+    kb.add(InlineKeyboardButton("290 — Получение взятки", callback_data="uk_290"))
+    kb.add(InlineKeyboardButton("291 — Дача взятки", callback_data="uk_291"))
+    kb.add(InlineKeyboardButton("306 — Ложный донос", callback_data="uk_306"))
+    kb.add(InlineKeyboardButton("307 — Ложные показания", callback_data="uk_307"))
+    kb.add(InlineKeyboardButton("318 — Насилие в отношении сотрудника", callback_data="uk_318"))
+    kb.add(InlineKeyboardButton("319 — Оскорбление представителя власти", callback_data="uk_319"))
+    kb.add(InlineKeyboardButton("327 — Подделка документов", callback_data="uk_327"))
+    kb.add(InlineKeyboardButton("330 — Самоуправство", callback_data="uk_330"))
+
+    kb.add(InlineKeyboardButton("⬅️ Назад", callback_data="law_criminal"))
+
+    return kb
+
+
 def answer_menu() -> InlineKeyboardMarkup:
     kb = InlineKeyboardMarkup(row_width=1)
     kb.add(button("📝 Получить консультацию", "consult"))
