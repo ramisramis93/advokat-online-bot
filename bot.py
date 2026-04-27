@@ -177,7 +177,14 @@ def main_menu() -> InlineKeyboardMarkup:
 
 
 def topics_menu() -> InlineKeyboardMarkup:
-    ...
+    kb = InlineKeyboardMarkup(row_width=2)
+
+    for idx, topic in enumerate(TOPICS.keys()):
+        kb.insert(button(topic, f"topic:{idx}"))
+
+    kb.add(InlineKeyboardButton("⚖️ Уголовное право", callback_data="law_criminal"))
+    kb.add(button("🏠 Главное меню", "main"))
+
     return kb
 
 
