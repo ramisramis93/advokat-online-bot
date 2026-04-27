@@ -275,6 +275,19 @@ def answer_menu() -> InlineKeyboardMarkup:
     return kb
 
 
+def subtopics_menu(topic_idx: int) -> InlineKeyboardMarkup:
+    topic_name = list(TOPICS.keys())[topic_idx]
+    kb = InlineKeyboardMarkup(row_width=2)
+
+    for title, answer_id in TOPICS[topic_name].items():
+        if str(answer_id) in ANSWERS:
+            kb.insert(button(title, f"answer:{answer_id}"))
+
+    kb.add(button("⬅️ Назад", "topics"), button("🏠 Главное меню", "main"))
+
+    return kb
+
+
 def search_results_menu(results: List[Tuple[int, str]]) -> InlineKeyboardMarkup:
     kb = InlineKeyboardMarkup(row_width=1)
     for answer_id, title in results[:8]:
