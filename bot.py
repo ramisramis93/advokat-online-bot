@@ -1039,6 +1039,9 @@ async def daily_report():
             now = datetime.now(ZoneInfo("Europe/Moscow"))
             target = now.replace(hour=8, minute=0, second=0, microsecond=0)
 
+            if now >= target:
+                target = target + timedelta(days=1)
+
             await asyncio.sleep((target - now).total_seconds())
 
             yesterday = (target - timedelta(days=1)).strftime("%Y-%m-%d")
